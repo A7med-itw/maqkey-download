@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="دليل تثبيت واستخدام MaqKey لتغيير وظائف أزرار ريموت Android TV وGoogle TV. كود Downloader: 5954729">
+<title>دليل MaqKey</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+html,body{margin:0}*,*::before,*::after{box-sizing:border-box}img{max-width:100%}
+/* Layout: one reading column in the order a user acts (install → turn on → teach a button → examples → help); remote-key styling carries the identity. */
+:root{
+  --bg:#F4F4F1; --surface:#FFFFFF; --ink:#1B1C1F; --muted:#5F6168; --line:#DEDED8;
+  --accent:#C2410C; --accent-soft:#FBE9DE; --key:#2B2D33; --key-ink:#F4F4F1; --warn-soft:#FFF4D6; --warn:#8A5A00;
+  --f-display:"Readex Pro","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Arabic","Geeza Pro",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121316; --surface:#1B1D21; --ink:#EEEEEA; --muted:#A1A3AA; --line:#2C2E34;
+  --accent:#F28C4E; --accent-soft:#3A2418; --key:#E9E9E4; --key-ink:#16171A; --warn-soft:#33290F; --warn:#F2C766; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121316; --surface:#1B1D21; --ink:#EEEEEA; --muted:#A1A3AA; --line:#2C2E34;
+  --accent:#F28C4E; --accent-soft:#3A2418; --key:#E9E9E4; --key-ink:#16171A; --warn-soft:#33290F; --warn:#F2C766; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.8;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 64px}
+main{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.35;margin:0}
+p{margin:0}
+.ltr{direction:ltr;unicode-bidi:isolate}
+
+header{display:flex;flex-direction:column;gap:10px;padding-bottom:8px}
+.brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mark{width:56px;height:56px;border-radius:14px;flex-shrink:0;display:block;box-shadow:0 0 0 1px var(--line)}
+h1{font-size:34px;font-weight:700}
+.version{font-family:var(--f-mono);font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+.lead{color:var(--muted);font-size:17px;max-width:60ch}
+
+.code-card{background:var(--key);color:var(--key-ink);border-radius:18px;padding:24px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+.code-card .label{font-size:14px;opacity:.75}
+.code{font-family:var(--f-mono);font-size:44px;letter-spacing:6px;line-height:1.2;direction:ltr}
+.code-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.btn{font:600 15px var(--f-body);background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 18px;cursor:pointer}
+.btn:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+.code-card small{opacity:.75;font-size:13px}
+.code-card a{color:var(--key-ink)}
+
+section{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.sec-head{display:flex;align-items:center;gap:12px}
+.num{font-family:var(--f-display);font-weight:700;font-size:15px;width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;flex-shrink:0}
+h2{font-size:21px;font-weight:700}
+.eyebrow{font-size:13px;color:var(--muted)}
+ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:12px}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px}
+ol.steps li::before{content:counter(s);font-family:var(--f-mono);font-size:13px;width:26px;height:26px;border-radius:7px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);margin-top:3px}
+ol.steps li>div{min-width:0}
+.path{font-weight:600}
+.path .sep{color:var(--muted);font-weight:400;padding:0 4px}
+kbd{font-family:var(--f-mono);font-size:13px;border:1px solid var(--line);border-bottom-width:3px;border-radius:7px;padding:1px 7px;background:var(--bg);direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+.note{font-size:14px;color:var(--muted);border-inline-start:3px solid var(--accent);padding-inline-start:12px}
+.warn{background:var(--warn-soft);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.warn h3{font-size:16px;color:var(--warn)}
+.warn p,.warn li{font-size:15px}
+pre{margin:0;background:var(--key);color:var(--key-ink);border-radius:10px;padding:12px 14px;overflow-x:auto;font-family:var(--f-mono);font-size:13px;direction:ltr;text-align:left}
+
+.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.action{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.action b{font-family:var(--f-display);font-weight:500}
+.action span{font-size:14px;color:var(--muted)}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{text-align:start;font-weight:600;color:var(--muted);font-size:13px;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.faq td:first-child{font-weight:600;width:36%}
+footer{color:var(--muted);font-size:13px;text-align:center;padding-top:8px}
+@media (max-width:480px){h1{font-size:28px}.code{font-size:36px;letter-spacing:4px}section{padding:18px}}
+</style>
+</head>
+<body>
+
+<main dir="rtl" lang="ar">
+  <header>
+    <div class="brand">
+      <img class="mark" src="data:image/webp;base64,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" alt="أيقونة MaqKey" width="56" height="56">
+      <h1>دليل MaqKey</h1>
+      <span class="version ltr">v1.1.0</span>
+    </div>
+    <p class="lead">اختر وظيفة كل زر في ريموت التلفزيون: يفتح تطبيقاً، أو يغيّر مصدر الإدخال، أو يتعطّل، مع وظيفة مختلفة للضغطة المطوّلة. يعمل على Android TV وGoogle TV بدون روت.</p>
+  </header>
+
+  <div class="code-card">
+    <div>
+      <div class="label">كود التثبيت في تطبيق Downloader</div>
+      <div class="code" id="code">5954729</div>
+      <small>أو الرابط المختصر <a class="ltr" href="https://aftv.news/5954729">aftv.news/5954729</a></small>
+    </div>
+    <div class="code-actions">
+      <button class="btn" id="copy" type="button">نسخ الكود</button>
+      <small>الكود ثابت ويعطي دائماً أحدث إصدار.</small>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="num">1</span><div><h2>التثبيت</h2><div class="eyebrow">مرة واحدة، حوالي 5 دقائق</div></div></div>
+    <ol class="steps">
+      <li><div>ثبّت تطبيق <b>Downloader</b> من متجر Google Play على التلفزيون.</div></li>
+      <li><div>فعّل وضع المطوّر:
+        <span class="path">الإعدادات<span class="sep">←</span>النظام<span class="sep">←</span>حول</span>،
+        ثم اضغط على <b>«إصدار نظام Android TV»</b> سبع مرات.</div></li>
+      <li><div>اسمح لـ Downloader بالتثبيت:
+        <span class="path">الإعدادات<span class="sep">←</span>التطبيقات<span class="sep">←</span>الأمان والقيود<span class="sep">←</span>مصادر غير معروفة</span>،
+        ثم فعّل <b>Downloader</b>.</div></li>
+      <li><div><b>أوقف Play Protect مؤقتاً</b> (الشرح تحت):
+        افتح <span class="path">متجر Google Play<span class="sep">←</span>صورة الحساب<span class="sep">←</span>Play Protect<span class="sep">←</span>⚙️</span>،
+        وأوقف <b>«فحص التطبيقات باستخدام Play Protect»</b>.</div></li>
+      <li><div>افتح Downloader، واكتب الكود <kbd>5954729</kbd>، ثم <kbd>Go</kbd>، ثم <kbd>Install</kbd>.</div></li>
+      <li><div>ارجع إلى Play Protect و<b>شغّل الفحص من جديد</b>.</div></li>
+    </ol>
+    <div class="warn">
+      <h3>لماذا أوقف Play Protect؟</h3>
+      <p>حتى يعرف MaqKey أي زر ضغطت، يستخدم «خدمة إمكانية الوصول» في أندرويد. جوجل تمنع أي تطبيق من خارج المتجر يستخدم هذه الخدمة، فتظهر رسالة «تم حظر التطبيق لحماية جهازك» بدون زر للتثبيت.</p>
+      <p>MaqKey لا ينظر إلا للأزرار التي تضبطها، ولا يقرأ أي شيء من الشاشة. إيقاف الفحص يكون فقط أثناء التثبيت، ثم تعيده.</p>
+    </div>
+    <p class="note">أسماء القوائم تختلف قليلاً بين الأجهزة. ابحث في الإعدادات عن «مصادر غير معروفة» و«Play Protect».</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">2</span><div><h2>تشغيل خدمة الأزرار</h2><div class="eyebrow">بدونها لا يتغير أي زر</div></div></div>
+    <ol class="steps">
+      <li><div>افتح MaqKey. السطر الأعلى يبيّن حالة الخدمة.</div></li>
+      <li><div>إذا كانت متوقفة، اضغط عليه. تفتح شاشة
+        <span class="path">إمكانية الوصول<span class="sep">←</span>أزرار MaqKey</span>، ففعّلها.</div></li>
+      <li><div>ارجع إلى MaqKey وتأكد أن السطر يقول <b>«خدمة الأزرار مفعّلة»</b>.</div></li>
+    </ol>
+    <div class="warn">
+      <h3>تلفزيونات TCL: خطوة إضافية مرة واحدة</h3>
+      <p>إذا ظهر <b>«مفعّلة، لكن التلفزيون يمنع تشغيلها»</b>، فنظام TCL يمنع خدمات التطبيقات المثبتة من خارج المتجر. تحتاج كمبيوتر على نفس الوايفاي، وتفعيل «تصحيح أخطاء USB» من خيارات المطوّر، ثم أمر واحد:</p>
+      <pre>adb connect IP-التلفزيون:5555
+adb shell appops set com.ahmed.maqkey APP_AUTO_START allow</pre>
+      <p>بعدها أطفئ الخدمة وشغّلها من إمكانية الوصول.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">3</span><div><h2>تعليم زر</h2></div></div>
+    <ol class="steps">
+      <li><div>في MaqKey اختر <b>«تعليم زر جديد»</b>.</div></li>
+      <li><div>اضغط الزر الذي تريد تغييره في الريموت. <kbd>Back</kbd> للإلغاء.</div></li>
+      <li><div>اختر وظيفة <b>الضغطة</b>، وإن أردت وظيفة <b>الضغطة المطوّلة</b>، ثم <b>حفظ</b>.</div></li>
+    </ol>
+    <div class="actions">
+      <div class="action"><b>فتح تطبيق</b><span>أي تطبيق مثبت على التلفزيون</span></div>
+      <div class="action"><b>تغيير المصدر</b><span>HDMI أو AV أو القنوات</span></div>
+      <div class="action"><b>لا شيء</b><span>يعطّل الزر تماماً</span></div>
+      <div class="action"><b>الأصلي</b><span>وظيفته المعتادة</span></div>
+    </div>
+    <p class="note">أزرار الأسهم وOK والرجوع لا تتغير، لأنها ضرورية للتنقل. والضغطة المطوّلة تحتاج وظيفة للضغطة أولاً.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">4</span><div><h2>أفكار للاستخدام</h2></div></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>الزر</th><th>الضغطة</th><th>الضغطة المطوّلة</th></tr></thead>
+      <tbody>
+        <tr><td>زر YouTube</td><td>يفتح MaqTube</td><td>يفتح YouTube الأصلي</td></tr>
+        <tr><td>زر Netflix</td><td>ينتقل إلى HDMI 1 (الرسيفر)</td><td>ينتقل إلى HDMI 2</td></tr>
+        <tr><td>زر Prime Video</td><td>يفتح Shahid</td><td>—</td></tr>
+        <tr><td>زر يضغطه الأطفال بالغلط</td><td>لا شيء</td><td>—</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">5</span><div><h2>إدارة الأزرار</h2></div></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>تريد أن</th><th>الطريقة</th></tr></thead>
+      <tbody>
+        <tr><td>تعدّل زراً أو تسمّيه</td><td>اختره من قائمة <b>الأزرار</b>، ثم <b>إعادة تسمية</b> أو غيّر وظيفته.</td></tr>
+        <tr><td>تحذف زراً</td><td>اختره ثم <b>حذف</b>. يرجع لوظيفته الأصلية.</td></tr>
+        <tr><td>ترجع الريموت كما كان</td><td><span class="path">الإعدادات<span class="sep">←</span>إعادة جهاز التحكم للوضع الطبيعي</span></td></tr>
+        <tr><td>تغيّر اللغة</td><td><span class="path">الإعدادات<span class="sep">←</span>English</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">?</span><div><h2>حل المشاكل</h2></div></div>
+    <div class="table-wrap"><table class="faq">
+      <tbody>
+        <tr><td>«تم حظر التطبيق لحماية جهازك»</td><td>أوقف Play Protect مؤقتاً وثبّت من جديد (الخطوة 4 في التثبيت).</td></tr>
+        <tr><td>«تم حظر التثبيت»</td><td>فعّل «مصادر غير معروفة» لتطبيق Downloader.</td></tr>
+        <tr><td>الزر يرجع لوظيفته الأصلية أحياناً</td><td>في TCL قد يوقف النظام الخدمة عند امتلاء الذاكرة، ويعيد أندرويد تشغيلها خلال ثوانٍ إلى نصف دقيقة تقريباً.</td></tr>
+        <tr><td>«التطبيق غير مثبت» أو «المصدر غير موجود»</td><td>التطبيق أو المصدر المختار انحذف. اختر وظيفة جديدة للزر.</td></tr>
+        <tr><td>لا يحدث شيء عند الضغط</td><td>تأكد أن السطر الأعلى في MaqKey يقول «خدمة الأزرار مفعّلة».</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <footer>MaqKey <span class="ltr">v1.1.0</span> · تطوير المقبالي</footer>
+</main>
+
+<script>
+(function(){
+  var btn=document.getElementById('copy'), code=document.getElementById('code');
+  btn.addEventListener('click',function(){
+    function done(){btn.textContent='تم النسخ';setTimeout(function(){btn.textContent='نسخ الكود'},1800)}
+    function fallback(){var r=document.createRange();r.selectNodeContents(code);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='الكود محدد'}
+    try{navigator.clipboard.writeText(code.textContent.trim()).then(done,fallback)}catch(e){fallback()}
+  });
+})();
+</script>
+
+</body>
+</html>
